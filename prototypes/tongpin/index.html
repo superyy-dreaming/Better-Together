@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#f7f8fa">
+<title>Better Together · 同频 UI 原型</title>
+<link rel="icon" href="assets/icons/users.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/icons.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="review-layout">
+<aside class="review-sidebar">
+<a class="wordmark" href="#today">better<br>together<span>.</span></a>
+<div class="concept-heading"><h1>同频<span>。</span></h1><p>各自的节奏。<br>共同的日常。</p></div>
+<nav aria-label="原型页面" id="review-nav"></nav>
+<div class="review-footer"><span class="status-dot"></span>交互原型 · 示例数据<br><p>全新视觉探索，等待你的审核。</p></div>
+</aside>
+<main class="stage" aria-label="应用原型">
+<div class="stage-caption"><span>Better Together</span><span id="stage-page">今日</span></div>
+<div class="app-frame" id="app-frame">
+<div class="prototype-label">设计预览 · 所有内容均为示例</div>
+<div class="app-scroll" id="app-scroll"><div id="screen"></div></div>
+<nav class="tabbar" id="tabbar" aria-label="应用导航"></nav>
+<div class="toast" role="status" aria-live="polite" id="toast"></div>
+</div>
+<div class="stage-bottom">点击体验完整流程<span>本地原型，不连接真实服务</span></div>
+</main>
+<aside class="review-notes">
+<div class="review-tools"><button id="theme-toggle" aria-label="切换深色模式"></button><button id="reset" aria-label="重置演示"></button></div>
+<div class="note-content" id="note-content"></div>
+<div class="scenario-panel"><label for="scenario">打卡演示场景</label><select id="scenario"><option value="normal">正常识别</option><option value="timeout">AI 暂不可用</option><option value="old">含一张非当天照片</option></select><p>选择场景后，进入中央打卡入口。</p></div>
+<button class="reset-text" data-action="overview">查看体验路线 <i class="ph ph-arrow-up-right" aria-hidden="true"></i></button>
+</aside>
+</div>
+<dialog id="sheet" aria-labelledby="sheet-title"><div id="sheet-body"></div></dialog>
+<script src="assets/qrcode.js"></script><script src="app.js"></script>
+</body>
+</html>

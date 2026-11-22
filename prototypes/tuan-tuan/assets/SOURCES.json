@@ -1,0 +1,9 @@
+{
+  "run.jpg": "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=85",
+  "book.jpg": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=85",
+  "meal.jpg": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=85",
+  "Nunito.ttf": "https://raw.githubusercontent.com/google/fonts/main/ofl/nunito/Nunito%5Bwght%5D.ttf",
+  "tuantuan-*.svg": "Original vector character, created for Better Together UI review. Source: make-characters.py",
+  "friend-*.svg": "Original character palette variants, created for Better Together UI review",
+  "icons": "Phosphor Icons 2.1.1, MIT"
+}

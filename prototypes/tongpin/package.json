@@ -1,0 +1,1 @@
+{"name":"better-together-tongpin-prototype","private":true,"version":"1.0.0","description":"独立 UI 审核原型，不连接生产服务","scripts":{"start":"python3 -m http.server 4173 --bind 127.0.0.1"},"dependencies":{"@phosphor-icons/core":"2.1.1","qrcode-generator":"2.0.4"}}

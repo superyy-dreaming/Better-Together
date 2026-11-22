@@ -1,0 +1,186 @@
+{
+  "source": "better-together-test-photos.zip",
+  "synthetic": true,
+  "images": [
+    {
+      "file": "food-01.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "91d6c6258a0040f2a8576d29b859d4c18b9baea5280d1a1086d6899c081f02b2",
+      "bytes": 664793
+    },
+    {
+      "file": "food-02.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "29bd161f6d26f9bb31b149ec52d64f25ed8514780a27eb810674b530e3b61ae3",
+      "bytes": 522100
+    },
+    {
+      "file": "food-03.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "a1b4a11ba1a6e32ca7ba5bb8c8b5f629e6311080c8f43409ba0e261a52b9f70a",
+      "bytes": 435093
+    },
+    {
+      "file": "food-04.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "f4ae450180fba1b1e822ac2fa28d2d5bf7f52f0a1907fa1828db8eb653804b19",
+      "bytes": 586452
+    },
+    {
+      "file": "food-05.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "71100d31ad5445ee02e2f58e75ce961dd27cbcbdc9b75e222695b39a5c7e7fbb",
+      "bytes": 615880
+    },
+    {
+      "file": "life-01.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "00098344e71afbdc25f1a4c50b1be9996451f787f54e190a9ba17409142f3bf8",
+      "bytes": 487044
+    },
+    {
+      "file": "life-02.jpg",
+      "size": [
+        1344,
+        1792
+      ],
+      "sha256": "482ae83579ec7a65a7bbef132437a5dbd552fdf22caa53aefa662a772412b4a4",
+      "bytes": 625589
+    },
+    {
+      "file": "life-03.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "d1e5e6c2148b257d1b08d922575a60973a3df381037d03d8a098655eea26f576",
+      "bytes": 613931
+    },
+    {
+      "file": "life-04.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "62340d1de72e94e25c6d9c4facee9391e37148bb864b36e1864ef387a0fa582b",
+      "bytes": 501688
+    },
+    {
+      "file": "sport-01.jpg",
+      "size": [
+        1344,
+        1792
+      ],
+      "sha256": "c93eb36c166da80694ebcca796c1433d7148a400a5483d4bd32f86b75208d88f",
+      "bytes": 347395
+    },
+    {
+      "file": "sport-02.jpg",
+      "size": [
+        1152,
+        2048
+      ],
+      "sha256": "84f73d3e935cd1c739fb50aa4743209bb8d583ca832265f3620450b43307edf4",
+      "bytes": 322713
+    },
+    {
+      "file": "sport-03.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "848b94c555b332f18c86b6bc16346fdfa54207b7283658f643bd19f8a09f70a1",
+      "bytes": 460515
+    },
+    {
+      "file": "sport-04.jpg",
+      "size": [
+        1344,
+        1792
+      ],
+      "sha256": "a42a2a69ac601b14ab5a2b15958e727c81a7bbacd75bfd80c6010033e2ecc352",
+      "bytes": 781415
+    },
+    {
+      "file": "sport-05.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "071d6fd2b0b3fa7ebeda501dd7dbe774c096ed322d5155b905637eda605837a4",
+      "bytes": 423455
+    },
+    {
+      "file": "sport-06.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "2b260ed5d54c39cad71fa9cef6d1cb5fb96e9ac384fce4273a823802761ebc05",
+      "bytes": 690837
+    },
+    {
+      "file": "study-01.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "59254d2493b56363f9c8c7cb91988d2ac24bc39c812ff2690c51182f713e2903",
+      "bytes": 481326
+    },
+    {
+      "file": "study-02.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "a6b9152da1d9d399a73aea037cc54a118af7dc9e771a28e21d2812accf9d9b1f",
+      "bytes": 543388
+    },
+    {
+      "file": "study-03.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "c406bbf5bc76b7d103c1e183cae1ecf0ee3bd44e6cc52ce090b768406c383d61",
+      "bytes": 474084
+    },
+    {
+      "file": "study-04.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "6dfdd1fdffdba30389d4475c6ec9818bdc564defd598833be005441b679b6559",
+      "bytes": 467738
+    },
+    {
+      "file": "study-05.jpg",
+      "size": [
+        1920,
+        1280
+      ],
+      "sha256": "684368bbc66676d51918a8396bebbbcdc3857d50a72dcfe868a5f0947865feef",
+      "bytes": 533955
+    }
+  ]
+}

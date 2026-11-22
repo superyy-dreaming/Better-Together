@@ -1,0 +1,5 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+BETTER_TOGETHER_BUNDLE_ID = app.bettertogether.betterTogether
+APS_ENVIRONMENT = production
+#include? "Signing.local.xcconfig"

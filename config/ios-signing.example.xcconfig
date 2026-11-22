@@ -1,0 +1,5 @@
+// Copy to app/ios/Flutter/Signing.local.xcconfig (ignored).
+// Use the explicitly selected Apple Developer team, not an auto-detected team.
+DEVELOPMENT_TEAM = YOUR_APPLE_TEAM_ID
+BETTER_TOGETHER_BUNDLE_ID = YOUR_REGISTERED_IOS_BUNDLE_ID
+CODE_SIGN_STYLE = Automatic

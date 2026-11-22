@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>打卡 App 原型 UI — 一起打卡 STAMP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDEBE3; --bg2:#E3E6D8; --panel:#FFFFFF; --panel2:#F7F5EE;
+  --ink:#161C18; --ink2:#5A665E; --line:#161C1822; --line2:#161C1814;
+  --stamp:#FF4A1A; --stamp-soft:#FFF0E9; --forest:#173E2E; --forest2:#1F5C42;
+  --sun:#FFB81C; --sun-soft:#FFF6D6; --sky:#DCEEE6; --vio:#E9E4FF;
+  --radius:20px;
+  --phone-bg:#F6F3EA; --phone-surface:#FFFFFF; --phone-surface2:#FBF9F2;
+  --shadow:0 20px 50px rgba(22,28,24,.18), 0 4px 14px rgba(22,28,24,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#101311; --bg2:#151A16; --panel:#1B201C; --panel2:#222822;
+    --ink:#F2EFE6; --ink2:#A8B3AA; --line:#FFFFFF26; --line2:#FFFFFF14;
+    --stamp:#FF6B3D; --stamp-soft:#3A231B; --forest:#7ED3A6; --forest2:#2A4A3A;
+    --sun:#FFC94D; --sun-soft:#332B12; --sky:#1E2E28; --vio:#2A2740;
+    --phone-bg:#171B18; --phone-surface:#212722; --phone-surface2:#1C211D;
+    --shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;min-height:44px}
+a{min-height:32px;display:inline-flex;align-items:center}
+
+/* ===== Page layout ===== */
+.page{max-width:1280px;margin:0 auto;padding:22px 20px 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.stamp-logo{width:60px;height:44px;flex:0 0 auto;border:2.5px solid var(--stamp);color:var(--stamp);border-radius:10px;display:grid;place-items:center;font-family:Archivo,sans-serif;font-weight:900;font-size:11px;letter-spacing:.02em;transform:rotate(-6deg);background:var(--panel);padding:0 4px;overflow:hidden}
+.brand h1{font-size:20px;margin:0;letter-spacing:-.02em;line-height:1.1}
+.brand p{margin:2px 0 0;font-size:12.5px;color:var(--ink2)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700}
+.pill b{color:var(--stamp)}
+.layout{display:grid;grid-template-columns:300px 400px 1fr;gap:22px;align-items:start}
+@media(max-width:1080px){.layout{grid-template-columns:280px 400px 1fr}}
+@media(max-width:920px){.layout{grid-template-columns:1fr;justify-items:center}.side{width:100%;max-width:520px}.spec{width:100%;max-width:520px}}
+
+/* ===== Side panels ===== */
+.card{background:var(--panel);border:1px solid var(--line2);border-radius:var(--radius);padding:18px}
+.card + .card{margin-top:14px}
+.card h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin:0 0 12px;font-weight:900}
+.card h3{margin:0 0 6px;font-size:16px;line-height:1.35}
+.card p{font-size:13.5px;line-height:1.65;color:var(--ink2);margin:0}
+.flow-list{display:flex;flex-direction:column;gap:6px}
+.flow-btn{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line2);background:var(--panel2);border-radius:14px;padding:12px 12px}
+.flow-btn.active{border-color:var(--ink);background:var(--panel);box-shadow:3px 3px 0 var(--ink)}
+.flow-btn .flow-num{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;text-align:center;font-family:Archivo;font-weight:800;font-size:13px;line-height:1;margin-top:1px}
+.flow-btn.active .flow-num{background:var(--stamp);color:#fff}
+.flow-btn strong{display:block;font-size:14px}
+.flow-btn .flow-desc{display:block;font-size:12px;color:var(--ink2);line-height:1.45;margin-top:2px}
+.tokens{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.token{border:1px solid var(--line2);border-radius:12px;padding:10px}
+.swatch{height:28px;border-radius:8px;margin-bottom:8px;border:1px solid rgba(0,0,0,.08)}
+.token b{font-size:12px;display:block}.token span{font-size:11px;color:var(--ink2);font-family:ui-monospace,monospace}
+.spec-list{margin:10px 0 0;padding:0;list-style:none}
+.spec-list li{font-size:13.5px;line-height:1.6;padding:9px 0;border-top:1px dashed var(--line);display:flex;gap:10px}
+.spec-list li::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--stamp);margin-top:8px}
+.kbd{font-family:ui-monospace,monospace;font-size:11px;background:var(--panel2);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 6px}
+.note-box{background:var(--sun-soft);border:1px dashed #B98A00;border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.6}
+@media(prefers-color-scheme:dark){.note-box{border-color:#6B5A1F}}
+
+/* ===== Phone ===== */
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.phone{width:390px;max-width:calc(100vw - 32px);height:800px;max-height:86vh;background:#0E120F;border-radius:48px;padding:11px;box-shadow:var(--shadow);position:relative;flex:0 0 auto}
+.phone::before{content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);width:112px;height:26px;background:#0E120F;border-radius:0 0 16px 16px;z-index:30}
+.screen{background:var(--phone-bg);border-radius:38px;height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.statusbar{height:38px;flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;padding:0 22px 4px;font-size:12px;font-weight:700}
+.viewport{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;position:relative}
+.viewport::-webkit-scrollbar{display:none}
+.view{display:none;padding:6px 18px 18px;animation:in .28s ease}
+.view.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.view{animation:none}.stamp-pop{animation:none!important}}
+
+/* phone components */
+.p-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;color:#fff;flex:0 0 auto;border:2px solid var(--phone-surface)}
+.av-a{background:#FF4A1A}.av-b{background:#1F5C42}.av-c{background:#7A5CFF}.av-d{background:#E8930C}.av-e{background:#2A7FFF}
+.greet{font-size:13px;color:var(--ink2)} .greet b{color:var(--ink);font-size:16px;display:block}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line2);background:var(--phone-surface);display:grid;place-items:center;position:relative}
+.icon-btn i{position:absolute;top:9px;right:10px;width:7px;height:7px;background:var(--stamp);border-radius:50%}
+.hero{background:var(--forest);color:#EAF6EE;border-radius:22px;padding:18px;position:relative;overflow:hidden}
+@media(prefers-color-scheme:dark){.hero{background:#1E3A2C}}
+.hero::after{content:"✓";position:absolute;right:118px;bottom:-34px;font-family:Archivo;font-weight:900;font-size:110px;opacity:.07;line-height:1}
+.hero-row{display:flex;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.flame{font-family:Archivo;font-weight:900;font-size:42px;line-height:1}
+.hero small{opacity:.75;font-size:12px}
+.progress{height:9px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-top:14px;position:relative;z-index:1}
+.progress i{display:block;height:100%;background:var(--sun);border-radius:99px}
+.team-mini{display:flex;align-items:center;margin-top:12px;position:relative;z-index:1}
+.team-mini .avatar{width:26px;height:26px;font-size:10px;margin-left:-7px;border-width:2px}
+.team-mini span{font-size:12px;margin-left:10px;opacity:.9}
+.section-title{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 10px}
+.section-title h4{margin:0;font-size:16px}.section-title span{font-size:12px;color:var(--ink2)}
+.task{background:var(--phone-surface);border:1px solid var(--line2);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.task.done{opacity:.92}
+.task-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto;font-size:20px}
+.task-main{flex:1;min-width:0}.task-main b{font-size:14.5px;display:block}.task-main p{margin:3px 0 0;font-size:12px;color:var(--ink2);line-height:1.45}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;border-radius:999px;padding:3px 8px;background:var(--panel2);border:1px solid var(--line2);white-space:nowrap}
+.chip.ok{background:#E4F3E9;color:#17603C;border-color:#BFE3CC}.chip.warn{background:var(--sun-soft);color:#7A5A00}
+.btn{border:0;border-radius:999px;padding:0 16px;font-weight:800;font-size:13.5px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-primary{background:var(--stamp);color:#fff;box-shadow:0 6px 16px rgba(255,74,26,.30)}
+.btn-dark{background:var(--ink);color:var(--bg)}
+.btn-ghost{background:var(--phone-surface);border:1px solid var(--line);color:var(--ink)}
+.btn:active{transform:scale(.97)}
+.freeze{display:flex;gap:12px;align-items:center;background:var(--phone-surface);border:1.5px dashed #9DB8E8;border-radius:18px;padding:13px 14px}
+.freeze b{font-size:13.5px;display:block}.freeze p{margin:2px 0 0;font-size:12px;color:var(--ink2)}
+
+/* bottom nav */
+.tabbar{flex:0 0 auto;background:var(--phone-surface);border-top:1px solid var(--line2);display:grid;grid-template-columns:1fr 1fr 72px 1fr 1fr;padding:8px 8px calc(10px + env(safe-area-inset-bottom));position:relative;z-index:20}
+.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--ink2);min-height:48px;justify-content:center;border-radius:12px}
+.tab.active{color:var(--ink)} .tab.active svg{stroke:var(--stamp)}
+.fab{width:56px;height:56px;border-radius:50%;background:var(--stamp);color:#fff;border:4px solid var(--phone-bg);display:grid;place-items:center;margin:-22px auto 0;box-shadow:0 10px 22px rgba(255,74,26,.35);font-size:26px;font-weight:300}
+.fab:active{transform:scale(.94)}
+
+/* camera */
+.camera-view{background:#101410;color:#fff;border-radius:22px;height:336px;position:relative;overflow:hidden;margin-top:6px}
+.camera-view::before{content:"";position:absolute;inset:0;background:
+ radial-gradient(ellipse 220px 150px at 50% 38%, rgba(255,220,160,.28), transparent 70%),
+ linear-gradient(160deg,#2B3A2E,#141A15 60%)}
+.cam-scene{position:absolute;inset:0;display:grid;place-items:center}
+.cam-book{width:170px;height:118px;background:#F3EAD3;border-radius:6px;transform:rotate(-4deg);box-shadow:0 18px 30px rgba(0,0,0,.45);padding:14px 16px;color:#333}
+.cam-book i{display:block;height:7px;background:#C9BFA3;border-radius:99px;margin-bottom:9px}
+.cam-book i:nth-child(2){width:82%}.cam-book i:nth-child(3){width:92%}.cam-book i:nth-child(4){width:64%;background:#FF4A1A}
+.vf{position:absolute;width:52px;height:52px;border:3px solid rgba(255,255,255,.9)}
+.vf.tl{top:16px;left:16px;border-right:0;border-bottom:0;border-radius:14px 0 0 0}.vf.tr{top:16px;right:16px;border-left:0;border-bottom:0;border-radius:0 14px 0 0}
+.vf.bl{bottom:16px;left:16px;border-right:0;border-top:0;border-radius:0 0 0 14px}.vf.br{bottom:16px;right:16px;border-left:0;border-top:0;border-radius:0 0 14px 0}
+.cam-top{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;z-index:2}
+.cam-top span{background:rgba(0,0,0,.5);padding:6px 12px;border-radius:999px}
+.cam-wm{position:absolute;bottom:70px;left:0;right:0;text-align:center;font-size:11px;opacity:.85;z-index:2}
+.shutter-row{display:flex;align-items:center;justify-content:space-between;padding:16px 6px 4px}
+.shutter{width:72px;height:72px;border-radius:50%;background:#fff;border:5px solid var(--stamp);display:grid;place-items:center}
+.shutter i{width:52px;height:52px;border-radius:50%;background:var(--stamp);display:block}
+.plan-pick{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.plan-pick::-webkit-scrollbar{display:none}
+.pick{flex:0 0 auto;border:1.5px solid var(--line);background:var(--phone-surface);border-radius:999px;padding:9px 14px;font-weight:800;font-size:13px;min-height:40px}
+.pick.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* verify + memo */
+.verify-box{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:18px}
+.vstep{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line2);font-size:14px}
+.vstep:last-child{border-bottom:0}
+.vdot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;flex:0 0 auto;background:var(--phone-surface2)}
+.vstep.doing .vdot{border-color:var(--stamp);color:var(--stamp)}
+.vstep.done .vdot{background:var(--forest2);border-color:var(--forest2);color:#fff}
+.vstep small{display:block;color:var(--ink2);font-size:12px;margin-top:1px}
+.memo{border:2px solid var(--ink);border-radius:20px;background:var(--phone-surface);overflow:hidden;position:relative}
+.memo-photo{height:150px;background:linear-gradient(150deg,#31463A,#1B2A21);display:grid;place-items:center;position:relative}
+.memo-photo .cam-book{transform:rotate(-3deg) scale(.92)}
+.stamp-seal{position:absolute;right:14px;top:12px;border:3px solid var(--stamp);color:var(--stamp);border-radius:10px;padding:5px 10px;font-weight:900;font-size:13px;transform:rotate(8deg);background:rgba(255,255,255,.88);letter-spacing:.06em}
+.stamp-pop{animation:pop .45s cubic-bezier(.2,2.2,.4,1)}
+@keyframes pop{0%{transform:rotate(8deg) scale(2.2);opacity:0}100%{transform:rotate(8deg) scale(1);opacity:1}}
+.memo-body{padding:16px}
+.memo-body h4{margin:0 0 4px;font-size:17px}
+.field{margin-top:12px}.field label{font-size:11.5px;font-weight:900;letter-spacing:.08em;color:var(--ink2);display:block;margin-bottom:6px}
+.field textarea,.field input{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--phone-surface2);padding:11px 12px;font:inherit;font-size:14px;color:var(--ink);min-height:44px}
+.field textarea{min-height:64px;resize:vertical}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.stat{background:var(--phone-surface2);border:1px solid var(--line2);border-radius:14px;padding:10px;text-align:center}
+.stat b{font-family:Archivo;font-size:19px;display:block}.stat span{font-size:11px;color:var(--ink2)}
+
+/* feed */
+.feed-item{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:14px;margin-bottom:12px}
+.feed-head{display:flex;gap:10px;align-items:center}
+.feed-head b{font-size:14px}.feed-head .sub{font-size:11.5px;color:var(--ink2);display:block}
+.feed-head .avatar{display:grid;place-items:center;color:#fff;font-size:14px}
+.feed-photo .chip{color:var(--ink)}
+.feed-photo{height:110px;border-radius:14px;margin:12px 0;display:flex;align-items:flex-end;padding:10px;color:#fff;font-size:12px;font-weight:700;position:relative;overflow:hidden}
+.fp-study{background:linear-gradient(140deg,#3E5C48,#223528)} .fp-food{background:linear-gradient(140deg,#C96A1E,#8A3E0E)} .fp-run{background:linear-gradient(140deg,#2E6FA8,#173E63)}
+.feed-photo .chip{background:rgba(255,255,255,.92);border:0}
+.feed-actions{display:flex;gap:8px;margin-top:10px}
+.mini-btn{flex:1;border:1px solid var(--line);background:var(--phone-surface2);border-radius:999px;font-size:12.5px;font-weight:800;min-height:38px}
+.mini-btn.nudged{background:var(--stamp-soft);border-color:var(--stamp);color:var(--stamp)}
+.team-progress{background:var(--phone-surface);border:1px solid var(--line2);border-radius:18px;padding:14px}
+.member-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line2);font-size:13.5px}
+.member-row:last-child{border-bottom:0}.member-row .bar{flex:1;height:8px;background:var(--panel2);border-radius:99px;overflow:hidden}.member-row .bar i{display:block;height:100%;background:var(--forest2)}
+
+/* report */
+.report-hero{background:var(--ink);color:var(--bg);border-radius:22px;padding:18px}
+.report-hero h4{margin:0 0 6px;font-size:19px;line-height:1.4}
+.report-hero p{margin:0;font-size:13px;line-height:1.7;opacity:.82}
+.chart-card{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:16px;margin-top:12px}
+.hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.hl{border-radius:16px;padding:13px;min-height:96px}
+.hl b{font-size:13.5px;display:block}.hl p{margin:4px 0 0;font-size:12px;line-height:1.5;opacity:.85}
+
+/* plans */
+.plan-card{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:16px;margin-bottom:12px}
+.plan-card h4{margin:0;font-size:16px}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.meta{background:var(--phone-surface2);border-radius:12px;padding:9px 11px;font-size:12px}
+.meta b{display:block;font-size:13px;margin-top:2px}
+
+/* ===== v2: plan marks & notification marks ===== */
+.plan-mark{width:46px;height:46px;flex:0 0 auto;display:grid;place-items:center;position:relative}
+.plan-mark svg{width:46px;height:46px;display:block}
+.plan-mark.sm{width:34px;height:34px}.plan-mark.sm svg{width:34px;height:34px}
+.notif-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;color:#fff}
+.notif-mark svg{width:19px;height:19px}
+.nm-poke{background:var(--stamp)} .nm-overdue{background:#8A5A00} .nm-doubt{background:#B3261E} .nm-sys{background:var(--forest2)} .nm-like{background:#C2185B}
+.mark-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mark-item{display:flex;gap:9px;align-items:center;border:1px solid var(--line2);border-radius:12px;padding:8px 10px;background:var(--panel2)}
+.mark-item b{font-size:12.5px;display:block}.mark-item span{font-size:11px;color:var(--ink2);line-height:1.4;display:block}
+.bell-wrap{position:relative;display:grid;place-items:center}
+.bell-wrap svg{width:22px;height:22px}
+.bell-dot{position:absolute;top:-3px;right:-4px;min-width:17px;height:17px;border-radius:99px;background:var(--stamp);color:#fff;font-size:10px;font-weight:900;display:grid;place-items:center;padding:0 4px;border:2px solid var(--phone-bg)}
+
+/* ===== v2: album / multi-photo / recognition ===== */
+.source-row{display:flex;gap:8px;margin-top:10px}
+.source-btn{flex:1;border:1.5px solid var(--line);background:var(--phone-surface);border-radius:14px;padding:9px 6px;font-size:12px;font-weight:800;min-height:44px;line-height:1.35}
+.source-btn small{display:block;font-weight:500;color:var(--ink2);font-size:10.5px;margin-top:2px}
+.source-btn.active{border-color:var(--ink);background:var(--ink);color:var(--bg)} .source-btn.active small{color:inherit;opacity:.75}
+.picker{display:none;background:var(--phone-surface);border:1px solid var(--line2);border-radius:16px;padding:12px;margin-top:10px}
+.picker.open{display:block}
+.picker h5{margin:0 0 4px;font-size:13px}.picker p{margin:0 0 10px;font-size:11.5px;color:var(--ink2);line-height:1.5}
+.picker-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pick-photo{border:2px solid var(--line2);border-radius:12px;padding:10px;text-align:left;background:var(--phone-surface2);min-height:44px}
+.pick-photo b{font-size:12.5px;display:block}.pick-photo span{font-size:11px;color:var(--ink2);display:block;margin-top:2px;line-height:1.45}
+.pick-photo.sel{border-color:var(--forest2);background:#E4F3E9}
+.pick-photo.rejected{opacity:.55;border-color:#B3261E;background:#FDECEA}
+.photo-tray{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.thumb{width:62px;height:62px;border-radius:12px;display:flex;flex-direction:column;justify-content:flex-end;padding:5px 6px;color:#fff;font-size:9.5px;font-weight:700;line-height:1.3;position:relative;overflow:hidden}
+.thumb button{position:absolute;top:2px;right:2px;width:20px;height:20px;min-height:20px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:11px;line-height:1;padding:0}
+.th-study{background:linear-gradient(140deg,#3E5C48,#223528)} .th-run{background:linear-gradient(140deg,#2E6FA8,#173E63)} .th-food{background:linear-gradient(140deg,#C96A1E,#8A3E0E)} .th-keep{background:linear-gradient(140deg,#111,#3A3A3A)}
+.tray-count{font-size:12px;color:var(--ink2);font-weight:700}
+.recog{display:none;margin-top:10px;background:var(--sun-soft);border:1.5px dashed #B98A00;border-radius:14px;padding:11px 12px;font-size:12.5px;line-height:1.55}
+.recog.show{display:block}.recog b{font-size:13.5px}
+.date-note{font-size:11.5px;margin-top:8px;line-height:1.55}
+.date-note.ok{color:#17603C}.date-note.bad{color:#B3261E;font-weight:700}
+
+/* ===== v2: comments, doubt, overdue ===== */
+.comment-box{display:none;border-top:1px dashed var(--line2);margin-top:10px;padding-top:10px}
+.comment-box.open{display:block}
+.comment-box textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--phone-surface2);padding:10px;font:inherit;font-size:13px;min-height:52px;color:var(--ink)}
+.doubt-line{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;margin:9px 0;cursor:pointer}
+.doubt-line input{width:19px;height:19px;accent-color:#B3261E;flex:0 0 auto}
+.doubt-meter{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink2);margin-top:8px}
+.doubt-meter .bar{flex:1;height:7px;background:var(--panel2);border-radius:99px;overflow:hidden}.doubt-meter .bar i{display:block;height:100%;background:#B3261E}
+.comment-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.comment-list p{margin:0;font-size:12.5px;line-height:1.55;background:var(--phone-surface2);border-radius:10px;padding:7px 10px}
+.comment-list .doubt-tag{color:#B3261E;font-weight:900;font-size:11px}
+.redo-banner{display:none;margin-top:10px;background:#FDECEA;border:1.5px solid #B3261E;color:#7A150E;border-radius:14px;padding:11px 12px;font-size:12.5px;line-height:1.55;font-weight:700}
+.redo-banner.show{display:block}
+.overdue-card{border:1.5px dashed #B98A00;background:var(--sun-soft)}
+.rule-strip{display:flex;gap:10px;align-items:flex-start;background:var(--phone-surface);border:1px solid var(--line2);border-radius:16px;padding:12px;margin-top:10px;font-size:12px;line-height:1.6;color:var(--ink2)}
+.rule-strip b{color:var(--ink);font-size:12.5px;display:block}
+
+/* ===== v2: report titles & share ===== */
+.titles-grid{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.title-card{display:flex;gap:11px;align-items:center;background:var(--phone-surface);border:1px solid var(--line2);border-radius:16px;padding:11px 13px}
+.title-card b{font-size:13.5px;display:block}.title-card p{margin:2px 0 0;font-size:12px;color:var(--ink2);line-height:1.5}
+.title-seal{flex:0 0 auto;width:44px;height:44px;border:2.5px solid var(--stamp);color:var(--stamp);border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:11px;transform:rotate(-8deg);text-align:center;line-height:1.25;padding:2px}
+.share-row{display:flex;gap:8px;margin-top:14px}.share-row .btn{flex:1}
+.memo-thumbs{position:absolute;left:12px;bottom:10px;display:flex;gap:6px;z-index:2}
+.memo-thumbs span{background:rgba(255,255,255,.92);color:#223528;border-radius:8px;font-size:10.5px;font-weight:800;padding:4px 7px}
+
+/* ===== v3: today header avatar + settings ===== */
+.today-head{gap:10px}
+.today-left{display:flex;align-items:center;gap:11px;min-width:0}
+.my-avatar{width:44px;height:44px;min-height:44px;border-radius:50%;border:2.5px solid var(--phone-surface);box-shadow:0 2px 8px rgba(0,0,0,.16);display:grid;place-items:center;font-weight:900;font-size:17px;color:#fff;background:#FF4A1A;flex:0 0 auto;padding:0;overflow:hidden}
+.my-avatar:active{transform:scale(.95)}
+.head-actions{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+.settings-btn svg{width:21px;height:21px}
+.settings-profile{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center}
+.settings-avatar-lg{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:26px;color:#fff;background:#FF4A1A;flex:0 0 auto;border:3px solid var(--phone-surface);box-shadow:0 3px 10px rgba(0,0,0,.15)}
+.avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px}
+.avatar-opt{width:100%;aspect-ratio:1;border-radius:50%;border:3px solid transparent;display:grid;place-items:center;font-weight:900;font-size:15px;color:#fff;min-height:44px;padding:0}
+.avatar-opt.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--phone-bg),0 0 0 4px var(--ink)}
+.settings-group{background:var(--phone-surface);border:1px solid var(--line2);border-radius:20px;padding:6px 16px;margin-top:12px}
+.settings-group h5{margin:12px 0 4px;font-size:12px;letter-spacing:.1em;color:var(--ink2);text-transform:uppercase}
+.set-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line2)}
+.set-row:last-child{border-bottom:0}
+.set-row .set-main{flex:1;min-width:0}.set-row .set-main b{font-size:14px;display:block}.set-row .set-main p{margin:2px 0 0;font-size:12px;color:var(--ink2);line-height:1.5}
+.toggle{width:50px;height:30px;min-height:30px;border-radius:99px;border:0;background:#C9CFC9;position:relative;flex:0 0 auto;padding:0;transition:.2s}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:.2s}
+.toggle.on{background:var(--forest2)}
+.toggle.on::after{left:23px}
+.set-link{width:100%;display:flex;align-items:center;gap:12px;background:none;border:0;text-align:left;padding:12px 0;border-bottom:1px dashed var(--line2);min-height:44px}
+.set-link:last-child{border-bottom:0}
+.set-link .set-main{flex:1}.set-link .set-main b{font-size:14px;display:block}.set-link .set-main p{margin:2px 0 0;font-size:12px;color:var(--ink2);line-height:1.5}
+.set-link .chev{color:var(--ink2);font-size:18px}
+
+/* toast */
+.toast{position:absolute;left:50%;bottom:104px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:40;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.phone-caption{font-size:12.5px;color:var(--ink2);text-align:center;max-width:390px;line-height:1.6}
+.footer-note{margin-top:26px;font-size:12.5px;color:var(--ink2);line-height:1.7;border-top:1px solid var(--line2);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div class="brand">
+      <div class="stamp-logo">STAMP</div>
+      <div>
+        <h1>一起打卡 · 原型 UI v2</h1>
+        <p>跨品类打卡 × 拍照验真 × AI 纪要 × 小队周报 — 可点走完整流程</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="pill">设计语言 <b>纸面收据 + 橡皮章</b></span>
+      <span class="pill">屏数 <b>6 屏 + 设置</b></span>
+      <span class="pill">状态 <b>高保真可交互</b></span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT -->
+    <aside class="side">
+      <div class="card">
+        <h2>流程导航 · 点任意一步</h2>
+        <div class="flow-list" id="flowList">
+          <button class="flow-btn active" data-go="today"><span class="flow-num">1</span><span><strong>今日 · Today</strong><span class="flow-desc">先看连续记录和小队进度，再决定先打哪个卡。</span></span></button>
+          <button class="flow-btn" data-go="camera"><span class="flow-num">2</span><span><strong>拍照打卡 · Camera</strong><span class="flow-desc">默认 ALL，拍或传相册（仅限今日照片）自动识别分类，可多张。</span></span></button>
+          <button class="flow-btn" data-go="memo"><span class="flow-num">3</span><span><strong>AI 验真 + 纪要 · Memo</strong><span class="flow-desc">查内容、查拍摄日期、生成纪要，确认后直接盖章。</span></span></button>
+          <button class="flow-btn" data-go="team"><span class="flow-num">4</span><span><strong>小队 · Team</strong><span class="flow-desc">盖章卡可赞可评；评论勾质疑，半数质疑才重打；逾期自动同步可戳。</span></span></button>
+          <button class="flow-btn" data-go="report"><span class="flow-num">5</span><span><strong>周报 · Weekly</strong><span class="flow-desc">带本周称号小结，可发小队动态，也可存图分享。</span></span></button>
+          <button class="flow-btn" data-go="plans"><span class="flow-num">6</span><span><strong>我的计划 · Plans</strong><span class="flow-desc">最多同时 3 个，7 天体验约 / 21 天正式约。</span></span></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>设计令牌 · OJO 式取舍</h2>
+        <div class="tokens">
+          <div class="token"><div class="swatch" style="background:#FF4A1A"></div><b>印章朱红</b><span>#FF4A1A · 完成/盖章</span></div>
+          <div class="token"><div class="swatch" style="background:#173E2E"></div><b>深林绿</b><span>#173E2E · 连续/可信</span></div>
+          <div class="token"><div class="swatch" style="background:#FFB81C"></div><b>高光黄</b><span>#FFB81C · 进度峰值</span></div>
+          <div class="token"><div class="swatch" style="background:#161C18"></div><b>墨色</b><span>#161C18 · 正文</span></div>
+        </div>
+        <p style="margin-top:12px">隐喻是「盖章」：每次打卡都是一张被验真、盖章、归档的收据。圆角克制（卡片 18–22px）、阴影只给手机本体，界面内靠 1px 线和色块分层，不堆玻璃拟态。</p>
+      </div>
+
+      <div class="card">
+        <h2>标志系统 · 计划标志</h2>
+        <p style="margin-bottom:10px">每个计划一枚专属「印记」：形状来自计划本身，不用通用 emoji 凑数 — 学习是翻开的书页压着书签，运动是跑道上的脚印，饮食是一碗热饭，自定义是星形私章，ALL 是四瓣合一的全集印。</p>
+        <div class="mark-legend">
+          <div class="mark-item"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#E4F3E9"/><path d="M24 13c-3-2.4-7-3-11-2.4v24c4-.6 8 0 11 2.4 3-2.4 7-3 11-2.4v-24c-4-.6-8 0-11 2.4z" fill="none" stroke="#1F5C42" stroke-width="2.6" stroke-linejoin="round"/><path d="M24 13v24" stroke="#1F5C42" stroke-width="2.6"/><path d="M31 10.8v7l-2.4-1.8L26.2 18v-7.4" fill="#FF4A1A"/></svg></span><span><b>学习印</b><span>书页 + 朱红书签</span></span></div>
+          <div class="mark-item"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF0E9"/><path d="M10 33c7 1 12-1 16-6l9-11" fill="none" stroke="#FF4A1A" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7"/><ellipse cx="31" cy="15" rx="5.5" ry="7.5" fill="#FF4A1A" transform="rotate(32 31 15)"/><path d="M13 39h22" stroke="#C93A10" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>运动印</b><span>跑道虚线 + 脚印</span></span></div>
+          <div class="mark-item"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF6D6"/><path d="M9 24h30c0 8-6 13-15 13S9 32 9 24z" fill="none" stroke="#B97E0C" stroke-width="2.8" stroke-linejoin="round"/><path d="M17 17c0-3 3-3 3-6M25 17c0-3 3-3 3-6" stroke="#E8930C" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M13 41h22" stroke="#B97E0C" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>饮食印</b><span>热饭碗 + 蒸汽</span></span></div>
+          <div class="mark-item"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#E9E4FF"/><path d="M24 8l3.8 9.2L37 19l-7.4 6.4L31.6 35 24 29.8 16.4 35l2-9.6L11 19l9.2-1.8z" fill="#7A5CFF"/></svg></span><span><b>自定义印</b><span>星形私章</span></span></div>
+          <div class="mark-item" style="grid-column:1/-1"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#161C18"/><circle cx="17" cy="17" r="6" fill="#7ED3A6"/><circle cx="31" cy="17" r="6" fill="#FF6B3D"/><circle cx="17" cy="31" r="6" fill="#FFC94D"/><circle cx="31" cy="31" r="6" fill="#8FB8FF"/></svg></span><span><b>ALL 全集印</b><span>四瓣合一 — 打卡默认选它，上传后由 AI 自动分到对应计划</span></span></div>
+        </div>
+        <h2 style="margin-top:16px">标志系统 · 通知标志</h2>
+        <div class="mark-legend">
+          <div class="mark-item"><span class="notif-mark nm-poke"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M9 11.5V5.8a1.8 1.8 0 013.6 0v4.2l4.9 1.6c1.2.4 1.9 1.6 1.6 2.9l-1 3.7A4 4 0 0114.2 21h-2.6c-1.5 0-2.9-.7-3.8-1.9L4.6 14.6c-.6-.9-.4-2 .5-2.6.8-.5 1.8-.3 2.4.4L9 14z"/></svg></span><span><b>戳一下</b><span>队友提醒 / 逾期催打</span></span></div>
+          <div class="mark-item"><span class="notif-mark nm-overdue"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2.5h6"/></svg></span><span><b>逾期同步</b><span>截止 +30 分钟未打卡</span></span></div>
+          <div class="mark-item"><span class="notif-mark nm-doubt"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9.5 9.3A2.6 2.6 0 1112 12.4v1.4"/><circle cx="12" cy="17.4" r=".6" fill="#fff"/><circle cx="12" cy="12" r="9.2" stroke-dasharray="3.5 3"/></svg></span><span><b>质疑</b><span>评论勾选 · 半数触发重打</span></span></div>
+          <div class="mark-item"><span class="notif-mark nm-sys"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h6M9 16h6M9 8h3"/></svg></span><span><b>纪要 / 周报</b><span>AI 生成与同步通知</span></span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>三条产品红线</h2>
+        <p>① App 不经手钱，彩头只记账；② 饮食热量只写区间并标注「估算」；③ 运动照片只证明到场，时长与消耗来自计时/健康数据。</p>
+      </div>
+    </aside>
+
+    <!-- CENTER PHONE -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span>●●●○ &nbsp;▰▰▰▱</span></div>
+          <div class="viewport" id="viewport">
+
+            <!-- 1 TODAY -->
+            <section class="view active" id="view-today">
+              <div class="p-head today-head">
+                <div class="today-left">
+                  <button class="my-avatar" id="myAvatarBtn" aria-label="我的头像 · 点开设置改头像" title="我的头像">Y</button>
+                  <div class="greet">11月17日 · 周二<b>早上好，yaya</b></div>
+                </div>
+                <div class="head-actions">
+                  <button class="icon-btn" aria-label="通知 · 3 条未读" id="bellBtn"><span class="bell-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0112 0v5l1.5 3.5h-15z"/><path d="M10 22a2.2 2.2 0 004 0"/></svg><span class="bell-dot">3</span></span></button>
+                  <button class="icon-btn settings-btn" aria-label="设置" id="settingsBtn" title="设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06A1.7 1.7 0 0015 19.4a1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.51 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9c.24.6.86 1 1.51 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.51 1z"/></svg></button>
+                </div>
+              </div>
+              <div class="hero">
+                <div class="hero-row">
+                  <div><small>连续打卡 · OPI 学习小队</small><div class="flame"><span id="streakNum">12</span> <span style="font-size:20px">天</span></div><small>个人最佳 18 天 · 本周冻结卡 ×1</small></div>
+                  <div style="text-align:right"><small>今日</small><div style="font-family:Archivo;font-weight:900;font-size:26px" id="todayCount">1 / 3</div><small>已完成</small></div>
+                </div>
+                <div class="progress"><i id="teamBar" style="width:60%"></i></div>
+                <div class="team-mini">
+                  <span class="avatar av-a">Y</span><span class="avatar av-b">锐</span><span class="avatar av-c">源</span><span class="avatar av-d">胜</span>
+                  <span>小队今日 3/5 人已打卡 · 还差小源、阿胜</span>
+                </div>
+              </div>
+
+              <div class="section-title"><h4>今日计划</h4><span>各计划截止见卡片 · 逾期 30 分钟自动同步小队</span></div>
+
+              <div class="task done" id="task-study">
+                <span class="plan-mark"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#E4F3E9"/><path d="M24 13c-3-2.4-7-3-11-2.4v24c4-.6 8 0 11 2.4 3-2.4 7-3 11-2.4v-24c-4-.6-8 0-11 2.4z" fill="none" stroke="#1F5C42" stroke-width="2.6" stroke-linejoin="round"/><path d="M24 13v24" stroke="#1F5C42" stroke-width="2.6"/><path d="M31 10.8v7l-2.4-1.8L26.2 18v-7.4" fill="#FF4A1A"/></svg></span>
+                <div class="task-main"><b>OPI 第 4 课 · 非正常情况</b><p>学习 32 分钟 · 已生成纪要「发动机失效处置流程」</p></div>
+                <span class="chip ok">✓ 已盖章</span>
+              </div>
+              <div class="task" id="task-run">
+                <span class="plan-mark"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF0E9"/><path d="M10 33c7 1 12-1 16-6l9-11" fill="none" stroke="#FF4A1A" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7"/><ellipse cx="31" cy="15" rx="5.5" ry="7.5" fill="#FF4A1A" transform="rotate(32 31 15)"/><path d="M13 39h22" stroke="#C93A10" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+                <div class="task-main"><b>傍晚跑步 30 分钟</b><p>截止 19:00 · 可传 Keep 截图 · 照片只做到场证明</p></div>
+                <button class="btn btn-primary" data-start-checkin="运动 · 跑步">去打卡</button>
+              </div>
+              <div class="task" id="task-food">
+                <span class="plan-mark"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF6D6"/><path d="M9 24h30c0 8-6 13-15 13S9 32 9 24z" fill="none" stroke="#B97E0C" stroke-width="2.8" stroke-linejoin="round"/><path d="M17 17c0-3 3-3 3-6M25 17c0-3 3-3 3-6" stroke="#E8930C" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M13 41h22" stroke="#B97E0C" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+                <div class="task-main"><b>健康晚餐打卡</b><p>截止 21:00 · AI 识别菜品 · 热量只给区间并标注估算</p></div>
+                <button class="btn btn-ghost" data-start-checkin="饮食 · 晚餐">去打卡</button>
+              </div>
+
+              <div class="rule-strip">
+                <span class="notif-mark nm-overdue"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2.5h6"/></svg></span>
+                <div><b>逾期同步规则</b>计划截止后 30 分钟还没打卡，这条未完成会自动同步到小队动态，队友可以戳你一下。23:30 之后截止的，统一在 23:30 同步，不半夜打扰。</div>
+              </div>
+
+              <div class="freeze">
+                <div style="font-size:26px">🧊</div>
+                <div style="flex:1"><b>冻结卡护盾</b><p>本周剩 1 张 · 漏打自动冻结，不清零、不羞辱</p></div>
+                <span class="chip warn">自动生效</span>
+              </div>
+
+              <div class="section-title"><h4>队友动态</h4><span>仅小队可见</span></div>
+              <div class="task">
+                <span class="avatar av-b">锐</span>
+                <div class="task-main"><b>周天锐 · 读书 45 分钟</b><p>《置身事内》第 3 章 · 12 分钟前盖章</p></div>
+                <button class="btn btn-ghost" data-nudge="周天锐">👍 赞</button>
+              </div>
+            </section>
+
+            <!-- 2 CAMERA -->
+            <section class="view" id="view-camera">
+              <div class="p-head"><div class="greet">第 2 步 · 拍照或上传证明<b id="camTitle">ALL · 自动识别打卡</b></div><span class="chip warn">相册仅限今日照片</span></div>
+              <div class="plan-pick" id="planPick">
+                <button class="pick active" data-plan="ALL">✦ ALL · 自动识别</button>
+                <button class="pick" data-plan="学习 · OPI 第4课">学习</button>
+                <button class="pick" data-plan="运动 · 跑步">运动</button>
+                <button class="pick" data-plan="饮食 · 晚餐">饮食</button>
+                <button class="pick" data-plan="自定义 · 练琴">自定义</button>
+              </div>
+              <p style="font-size:12px;color:var(--ink2);line-height:1.55;margin:0 2px 2px">默认选 <b style="color:var(--ink)">ALL</b>：你只管上传，AI 按内容自动分到对应计划；识别不准时，点上方标签改选，再重新打卡。</p>
+              <div class="camera-view">
+                <div class="cam-top"><span>● REC &nbsp;实时拍摄 · 请让证明物完整入镜</span></div>
+                <div class="cam-scene"><div class="cam-book"><i></i><i></i><i></i><i></i><div style="font-size:11px;color:#8A7D5A;margin-top:6px">OPI 笔记 · 第 4 课 / 跑鞋与计时界面</div></div></div>
+                <span class="vf tl"></span><span class="vf tr"></span><span class="vf bl"></span><span class="vf br"></span>
+                <div class="cam-wm">2026-11-17 18:42 · 一起打卡水印 · 仅小队可见</div>
+              </div>
+              <div class="source-row">
+                <button class="source-btn" id="albumBtn">🖼 从相册选<small>读取拍摄日期 · 仅今日可过</small></button>
+                <button class="source-btn" id="keepBtn">⌚ 运动截图<small>Keep 等 App · 认日期与数据</small></button>
+                <button class="source-btn" id="timerBtn">⏱ 先计时<small>运动类到场计时</small></button>
+              </div>
+              <div class="picker" id="albumPicker">
+                <h5>相册 · 点选要上传的照片（可多选）</h5>
+                <p>系统会读每张照片的拍摄日期：今天拍的才能用，昨天的会被拦下。试着把昨天那张也点上看看。</p>
+                <div class="picker-grid">
+                  <button class="pick-photo" data-photo="study"><b>📖 笔记照片</b><span>今天 11-17 14:20 拍摄 · 学习内容</span></button>
+                  <button class="pick-photo" data-photo="run"><b>👟 跑后自拍</b><span>今天 11-17 18:31 拍摄 · 运动内容</span></button>
+                  <button class="pick-photo" data-photo="food"><b>🍽 晚餐餐盘</b><span>今天 11-17 18:05 拍摄 · 饮食内容</span></button>
+                  <button class="pick-photo" data-photo="old"><b>📷 昨天的笔记</b><span>昨天 11-16 21:30 拍摄 · 非今日</span></button>
+                </div>
+                <div class="date-note" id="dateNote"></div>
+                <button class="btn btn-dark" id="albumConfirm" style="width:100%;margin-top:10px">把选中的加入打卡</button>
+              </div>
+              <div class="photo-tray" id="photoTray"><span class="tray-count" id="trayCount">已选 0 / 6 张 · 照片可多张，一次打卡一起交</span></div>
+              <div class="recog" id="recogBox"></div>
+              <div class="shutter-row">
+                <button class="btn btn-ghost" data-go="today">取消</button>
+                <button class="shutter" id="shutterBtn" aria-label="拍照"><i></i></button>
+                <button class="btn btn-primary" id="toVerifyBtn">去验真</button>
+              </div>
+              <p style="font-size:12px;color:var(--ink2);line-height:1.6;margin:10px 2px 0">按快门 = 现拍一张加入；相册照片逐张查拍摄日期，非今日直接拦截；运动类可传 Keep 等运动 App 的当天截图。选好后点「去验真」。</p>
+            </section>
+
+            <!-- 3 MEMO -->
+            <section class="view" id="view-memo">
+              <div class="p-head"><div class="greet">第 3 步 · AI 验真与纪要<b>确认后盖章发布</b></div><span class="chip ok" id="verifyChip" style="display:none">已验真 94%</span></div>
+
+              <div class="verify-box" id="verifyBox">
+                <div class="vstep" data-vs="0"><span class="vdot">1</span><div>内容识别与自动分类<small id="vs0sub">识别画面内容，自动分到对应计划（ALL 模式）</small></div></div>
+                <div class="vstep" data-vs="1"><span class="vdot">2</span><div>日期与来源校验<small>现拍看水印 · 相册读拍摄日期（须今日）· 运动截图认 App 日期与数据 · 查重复图</small></div></div>
+                <div class="vstep" data-vs="2"><span class="vdot">3</span><div>生成结构化纪要<small>提取时长、内容与数据，等待你确认</small></div></div>
+                <button class="btn btn-dark" id="runVerify" style="width:100%;margin-top:14px">开始验真</button>
+                <p style="font-size:12px;color:var(--ink2);line-height:1.6;margin:10px 0 0">验真通过即盖章成功 — 没有「存疑」状态。之后队友可以点赞、评论；评论勾了「质疑」且半数队友都质疑时，才需要重新打卡。</p>
+              </div>
+
+              <div id="memoWrap" style="display:none;margin-top:14px">
+                <div class="memo">
+                  <div class="memo-photo">
+                    <div class="cam-book"><i></i><i></i><i></i><i></i></div>
+                    <div class="memo-thumbs" id="memoThumbs"><span>证据 1 张</span><span id="memoSrc">实时拍摄</span></div>
+                    <div class="stamp-seal" id="seal">已盖章 ✓</div>
+                  </div>
+                  <div class="memo-body">
+                    <h4 id="memoTitle">跑步打卡纪要</h4>
+                    <p style="margin:0;font-size:12.5px;color:var(--ink2)">AI 生成 · 你可以改，改完再发布 — AI 会认错，这是信任设计</p>
+                    <div class="stat-grid">
+                      <div class="stat"><b id="memoStat1">32</b><span>分钟 · 计时器</span></div>
+                      <div class="stat"><b id="memoStat2">4.8</b><span>公里 · 健康数据</span></div>
+                      <div class="stat"><b id="memoStat3">~286</b><span>千卡 · 估算</span></div>
+                    </div>
+                    <div class="field"><label>今日纪要（可编辑）</label><textarea id="memoText">傍晚沿河跑步 32 分钟，配速稳定，后半程略降速。照片为跑鞋与计时界面，到场证明成立；时长与距离来自计时与手机健康数据。</textarea></div>
+                    <div class="field"><label>给队友的一句话</label><input id="memoNote" value="今天没偷懒，明天继续约傍晚场。"/></div>
+                    <div style="display:flex;gap:8px;margin-top:16px">
+                      <button class="btn btn-ghost" style="flex:1" data-go="camera">重拍</button>
+                      <button class="btn btn-primary" style="flex:2" id="publishBtn">盖章并发布到小队</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4 TEAM -->
+            <section class="view" id="view-team">
+              <div class="p-head"><div class="greet">2–5 人私密小队 · 各定各的计划<b>OPI 学习小队</b></div><button class="btn btn-ghost">邀请码</button></div>
+              <div class="team-progress">
+                <div style="display:flex;justify-content:space-between;font-size:13px"><b>小队共同进度 · 本周</b><span>18 / 25 次</span></div>
+                <div class="progress" style="background:var(--panel2);margin-top:10px"><i style="width:72%;background:var(--forest2)"></i></div>
+                <div class="member-row"><span class="avatar av-a">Y</span><span style="width:52px">你</span><span class="bar"><i style="width:80%"></i></span><b>4/5</b></div>
+                <div class="member-row"><span class="avatar av-b">锐</span><span style="width:52px">周天锐</span><span class="bar"><i style="width:100%"></i></span><b>5/5</b></div>
+                <div class="member-row"><span class="avatar av-c">源</span><span style="width:52px">彭源</span><span class="bar"><i style="width:40%"></i></span><b>2/5</b></div>
+                <div class="member-row"><span class="avatar av-d">胜</span><span style="width:52px">严崇胜</span><span class="bar"><i style="width:60%"></i></span><b>3/5</b></div>
+              </div>
+
+              <div class="section-title"><h4>小队动态</h4><span>打卡即盖章 · 可赞可评 · 质疑过半才重打</span></div>
+              <div id="feedList">
+                <article class="feed-item">
+                  <div class="feed-head"><span class="avatar av-b">锐</span><div style="flex:1"><b>周天锐 · 读书</b><span class="sub">今天 07:12 · 已验真 96% · 2 张照片</span></div><span class="chip ok">✓ 盖章</span></div>
+                  <div class="feed-photo fp-study"><span>《置身事内》第 3 章 · 笔记照片</span><span class="chip">45 分钟</span></div>
+                  <p style="margin:0;font-size:13px;line-height:1.6">纪要：读完地方政府投融资一节，摘了 3 条笔记。重点是土地财政与城投的关系。</p>
+                  <div class="feed-actions"><button class="mini-btn" data-like>♥ 赞 · 3</button><button class="mini-btn" data-comment-toggle>💬 评论 · 1</button></div>
+                  <div class="comment-box">
+                    <div class="comment-list"><p><b>彭源：</b>这章我也卡过，城投那段值得二刷。</p></div>
+                    <textarea placeholder="写评论…（只是普通评论就直接发）"></textarea>
+                    <label class="doubt-line"><input type="checkbox" class="doubt-check"/> 勾选 = 我质疑这张卡（计入质疑票）</label>
+                    <button class="btn btn-dark submit-comment" style="width:100%">发表评论</button>
+                  </div>
+                </article>
+                <article class="feed-item" id="doubtCard">
+                  <div class="feed-head"><span class="avatar av-c">源</span><div style="flex:1"><b>彭源 · 晚餐</b><span class="sub">今天 18:05 · 已验真 · 相册今日照片 1 张</span></div><span class="chip ok" id="doubtCardChip">✓ 盖章</span></div>
+                  <div class="feed-photo fp-food"><span>番茄炒蛋 + 糙米饭 · 餐盘照片</span><span class="chip">约 520–640 千卡 · 估算</span></div>
+                  <p style="margin:0;font-size:13px;line-height:1.6">盖章成功的卡照常计入。觉得证据不对劲？在评论里勾上「质疑」再发 — 小队 5 人里满 3 人质疑（过半），这张卡才会被打回重新打卡。</p>
+                  <div class="doubt-meter"><span>质疑 <b id="doubtCount">2</b> / 3（过半）</span><span class="bar"><i id="doubtBar" style="width:66%"></i></span><span>锐、胜 已质疑</span></div>
+                  <div class="feed-actions"><button class="mini-btn" data-like>♥ 赞 · 2</button><button class="mini-btn" data-comment-toggle>💬 评论 · 2</button></div>
+                  <div class="comment-box">
+                    <div class="comment-list">
+                      <p><span class="doubt-tag">质疑 · </span><b>周天锐：</b>这盘子像上周那张，麻烦补一张带今天小票的。</p>
+                      <p><span class="doubt-tag">质疑 · </span><b>严崇胜：</b>同感，光线太暗看不清菜。</p>
+                    </div>
+                    <textarea placeholder="写评论…"></textarea>
+                    <label class="doubt-line"><input type="checkbox" class="doubt-check"/> 勾选 = 我质疑这张卡（再 1 票就过半）</label>
+                    <button class="btn btn-dark submit-comment" style="width:100%">发表评论</button>
+                  </div>
+                  <div class="redo-banner" id="redoBanner">⚠ 质疑已过半（3 / 5 人）— 这张卡的盖章已撤销，彭源需要重新打卡。重打入口已推送给他，连续记录先冻结保护，不直接清零。<div style="margin-top:8px"><button class="btn btn-primary" data-nudge="彭源">👉 戳他重打</button></div></div>
+                </article>
+                <article class="feed-item overdue-card" id="pendingNudge">
+                  <div class="feed-head"><span class="notif-mark nm-overdue"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2.5h6"/></svg></span><div style="flex:1"><b>系统同步 · 严崇胜 未完成</b><span class="sub">计划：健身 40 分钟 · 截止 19:00 · 已逾期 32 分钟</span></div><span class="chip warn">逾期同步</span></div>
+                  <p style="margin:10px 0 0;font-size:13px;line-height:1.6">截止后 30 分钟仍未打卡，系统自动把这条同步到小队动态（23:30 后截止的统一 23:30 同步）。戳他一下，提醒会直接推到他手机上。</p>
+                  <div class="feed-actions"><button class="mini-btn" data-nudge="严崇胜">👉 戳他一下（今日剩 2 次）</button></div>
+                </article>
+              </div>
+            </section>
+
+            <!-- 5 REPORT -->
+            <section class="view" id="view-report">
+              <div class="p-head"><div class="greet">每周日 20:00 生成 · 发给队友看<b>第 3 周周报</b></div><span class="chip ok">已同步小队</span></div>
+              <div class="report-hero">
+                <h4>这周你没有靠意志力硬撑，是靠「有人看着」撑下来的。</h4>
+                <p>5 天里完成了 13 次打卡，学习占一半。周三漏了一次，冻结卡替你保住了连续记录 — 断了能接上，比从不清零更重要。</p>
+              </div>
+              <div class="chart-card">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">本周完成率 87%</b><span style="font-size:12px;color:var(--ink2)">上周 71% ↑</span></div>
+                <svg viewBox="0 0 320 120" width="100%" height="120" role="img" aria-label="周一到周日打卡次数柱状图" style="margin-top:10px">
+                  <line x1="28" y1="96" x2="312" y2="96" stroke="var(--line)" stroke-width="1"/>
+                  <g font-size="10" fill="var(--ink2)" text-anchor="middle">
+                    <rect x="38" y="36" width="26" height="60" rx="6" fill="#1F5C42"/><text x="51" y="110">一</text><text x="51" y="30" fill="var(--ink)" font-weight="700">3</text>
+                    <rect x="78" y="56" width="26" height="40" rx="6" fill="#1F5C42"/><text x="91" y="110">二</text><text x="91" y="50" font-weight="700" fill="var(--ink)">2</text>
+                    <rect x="118" y="76" width="26" height="20" rx="6" fill="#C9CFC9"/><text x="131" y="110">三</text><text x="131" y="70" font-weight="700" fill="var(--ink)">1·冻</text>
+                    <rect x="158" y="36" width="26" height="60" rx="6" fill="#FF4A1A"/><text x="171" y="110">四</text><text x="171" y="30" font-weight="700" fill="var(--ink)">3</text>
+                    <rect x="198" y="56" width="26" height="40" rx="6" fill="#1F5C42"/><text x="211" y="110">五</text><text x="211" y="50" font-weight="700" fill="var(--ink)">2</text>
+                    <rect x="238" y="56" width="26" height="40" rx="6" fill="#1F5C42"/><text x="251" y="110">六</text><text x="251" y="50" font-weight="700" fill="var(--ink)">2</text>
+                    <rect x="278" y="76" width="26" height="20" rx="6" fill="#FFB81C"/><text x="291" y="110">日</text><text x="291" y="70" font-weight="700" fill="var(--ink)">待</text>
+                  </g>
+                </svg>
+                <div class="stat-grid" style="margin-top:4px">
+                  <div class="stat"><b>13</b><span>总打卡次</span></div>
+                  <div class="stat"><b>6.2h</b><span>学习总时长</span></div>
+                  <div class="stat"><b>4</b><span>运动到场</span></div>
+                </div>
+              </div>
+              <div class="hl-grid">
+                <div class="hl" style="background:var(--sun-soft)"><b>★ 本周高光</b><p>周四 OPI 纪要被 3 位队友点赞，是全队本周最认真的一张卡。</p></div>
+                <div class="hl" style="background:var(--sky)"><b>下周建议</b><p>把跑步从傍晚提前到 18:00，你过去两周的漏打都发生在晚饭后。</p></div>
+              </div>
+              <div class="section-title"><h4>本周称号 · 小结语</h4><span>按真实数据颁的</span></div>
+              <div class="titles-grid">
+                <div class="title-card"><span class="title-seal">最<br/>积极</span><div><b>你是这周打卡最积极的人</b><p>13 次打卡全队第一，5 天里有 4 天第一个盖章。</p></div></div>
+                <div class="title-card"><span class="title-seal" style="border-color:var(--forest2);color:var(--forest2)">点评<br/>家</span><div><b>你是本周的点评家</b><p>给队友写了 9 条评论、点了 14 个赞 — 小队氛围一半是你撑的。</p></div></div>
+                <div class="title-card"><span class="title-seal" style="border-color:#B98A00;color:#8A5A00">被盯<br/>打卡</span><div><b>本周同伴盯着你打了 4 次卡</b><p>被戳 4 次、被催 2 次，全都当天补上了 — 有人盯着，真的有用。</p></div></div>
+              </div>
+              <div class="share-row">
+                <button class="btn btn-primary" id="shareReport">发到小队动态</button>
+                <button class="btn btn-ghost" id="saveReportImg">保存图片分享</button>
+              </div>
+              <p style="font-size:12px;color:var(--ink2);line-height:1.6;margin-top:10px">两种发法：发到小队动态，队友能在 App 里点开点评；或生成一张周报长图存到相册，转发到任何地方。研究背书：每周把进度发给朋友的人，目标达成率明显更高。</p>
+            </section>
+
+            <!-- 6 PLANS -->
+            <section class="view" id="view-plans">
+              <div class="p-head"><div class="greet">一人最多同时 3 个 · 贪多必断<b>我的计划</b></div><button class="btn btn-primary" id="newPlanBtn">+ 新建</button></div>
+              <article class="plan-card">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h4 style="display:flex;gap:9px;align-items:center"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#E4F3E9"/><path d="M24 13c-3-2.4-7-3-11-2.4v24c4-.6 8 0 11 2.4 3-2.4 7-3 11-2.4v-24c-4-.6-8 0-11 2.4z" fill="none" stroke="#1F5C42" stroke-width="2.6" stroke-linejoin="round"/><path d="M24 13v24" stroke="#1F5C42" stroke-width="2.6"/><path d="M31 10.8v7l-2.4-1.8L26.2 18v-7.4" fill="#FF4A1A"/></svg></span>OPI 学习</h4><span class="chip ok">21 天正式约 · 第 12 天</span></div>
+                <div class="meta-grid">
+                  <div class="meta">频率<b>每天 1 次</b></div><div class="meta">证明<b>现拍 / 相册今日照片 · 可多张</b></div>
+                  <div class="meta">提醒<b>14:00 / 07:30 按排班</b></div><div class="meta">逾期<b>截止 22:00 · +30 分钟未打自动同步小队</b></div>
+                </div>
+              </article>
+              <article class="plan-card">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h4 style="display:flex;gap:9px;align-items:center"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF0E9"/><path d="M10 33c7 1 12-1 16-6l9-11" fill="none" stroke="#FF4A1A" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7"/><ellipse cx="31" cy="15" rx="5.5" ry="7.5" fill="#FF4A1A" transform="rotate(32 31 15)"/><path d="M13 39h22" stroke="#C93A10" stroke-width="2.6" stroke-linecap="round"/></svg></span>傍晚跑步</h4><span class="chip">7 天体验约 · 第 4 天</span></div>
+                <div class="meta-grid">
+                  <div class="meta">频率<b>每周 4 次</b></div><div class="meta">证明<b>到场照 / Keep 等截图 · 可多张</b></div>
+                  <div class="meta">提醒<b>17:30 · 截止前 2h 队友可见未打</b></div><div class="meta">逾期<b>截止 19:00 · +30 分钟未打自动同步小队</b></div>
+                </div>
+              </article>
+              <article class="plan-card">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h4 style="display:flex;gap:9px;align-items:center"><span class="plan-mark sm"><svg viewBox="0 0 48 48"><rect x="3" y="3" width="42" height="42" rx="13" fill="#FFF6D6"/><path d="M9 24h30c0 8-6 13-15 13S9 32 9 24z" fill="none" stroke="#B97E0C" stroke-width="2.8" stroke-linejoin="round"/><path d="M17 17c0-3 3-3 3-6M25 17c0-3 3-3 3-6" stroke="#E8930C" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M13 41h22" stroke="#B97E0C" stroke-width="2.6" stroke-linecap="round"/></svg></span>健康晚餐</h4><span class="chip">21 天正式约 · 第 9 天</span></div>
+                <div class="meta-grid">
+                  <div class="meta">频率<b>每天 1 次</b></div><div class="meta">证明<b>现拍 / 相册今日照片 · 可多张</b></div>
+                  <div class="meta">AI 纪要<b>菜品 + 热量区间（估算）</b></div><div class="meta">逾期<b>截止 21:00 · +30 分钟未打自动同步小队</b></div>
+                </div>
+              </article>
+              <div class="note-box">新建计划只走四步：选品类模板 → 定频率与周期 → 选证明方式 → 定提醒时间。自定义计划兜底，但第一版主推学习 / 饮食 / 运动三类。</div>
+            </section>
+
+            <!-- 7 SETTINGS -->
+            <section class="view" id="view-settings">
+              <div class="p-head">
+                <button class="btn btn-ghost" data-go="today" style="min-height:38px;padding:0 13px">← 返回今日</button>
+                <div class="greet" style="text-align:right">个人与系统<b style="font-size:17px">设置</b></div>
+              </div>
+
+              <div class="settings-profile">
+                <span class="settings-avatar-lg" id="settingsAvatarPreview">Y</span>
+                <div style="flex:1;min-width:0">
+                  <b style="font-size:16px;display:block">yaya</b>
+                  <p style="margin:3px 0 0;font-size:12px;color:var(--ink2);line-height:1.5">OPI 学习小队 · 连续打卡 <span id="settingsStreak">12</span> 天<br/>头像会同步到今日页左上角、小队和动态里。</p>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h5>更换头像</h5>
+                <p style="font-size:12px;color:var(--ink2);line-height:1.55;margin:0">点一枚直接换上，今日页左上角立刻同步。也可以从相册上传一张自己的照片。</p>
+                <div class="avatar-grid" id="avatarGrid">
+                  <button class="avatar-opt sel" data-avatar-color="#FF4A1A" style="background:#FF4A1A" aria-label="朱红头像">Y</button>
+                  <button class="avatar-opt" data-avatar-color="#1F5C42" style="background:#1F5C42" aria-label="林绿头像">Y</button>
+                  <button class="avatar-opt" data-avatar-color="#7A5CFF" style="background:#7A5CFF" aria-label="紫色头像">Y</button>
+                  <button class="avatar-opt" data-avatar-color="#E8930C" style="background:#E8930C" aria-label="橙色头像">Y</button>
+                  <button class="avatar-opt" data-avatar-color="#2A7FFF" style="background:#2A7FFF" aria-label="蓝色头像">Y</button>
+                  <button class="avatar-opt" data-avatar-color="#161C18" style="background:#161C18" aria-label="墨色头像">Y</button>
+                </div>
+                <button class="btn btn-ghost" id="uploadAvatarBtn" style="width:100%;margin:12px 0 14px">🖼 从相册上传头像</button>
+              </div>
+
+              <div class="settings-group">
+                <h5>系统通知</h5>
+                <div class="set-row"><div class="set-main"><b>系统通知总开关</b><p>关掉后不再推送任何提醒，App 内动态照常更新</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="系统通知总开关" data-toggle-name="系统通知"></button></div>
+                <div class="set-row"><div class="set-main"><b>被戳一下时提醒</b><p>队友戳你、催你重打时立刻通知</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="被戳一下时提醒" data-toggle-name="戳一下提醒"></button></div>
+                <div class="set-row"><div class="set-main"><b>打卡截止前提醒</b><p>截止前 30 分钟还没打卡时提醒你一次</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="打卡截止前提醒" data-toggle-name="截止前提醒"></button></div>
+                <div class="set-row"><div class="set-main"><b>逾期同步通知</b><p>你的未完成被同步到小队动态时告诉你</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="逾期同步通知" data-toggle-name="逾期同步通知"></button></div>
+                <div class="set-row"><div class="set-main"><b>队友动态</b><p>队友盖章、被质疑过半需要重打时通知</p></div><button class="toggle" role="switch" aria-checked="false" aria-label="队友动态通知" data-toggle-name="队友动态通知"></button></div>
+                <div class="set-row"><div class="set-main"><b>周报生成提醒</b><p>每周日 20:00 周报生成后通知你查看</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="周报生成提醒" data-toggle-name="周报提醒"></button></div>
+                <div class="set-row"><div class="set-main"><b>夜间免打扰</b><p>23:30 – 次日 07:00 不推送，与逾期 23:30 统一同步规则一致</p></div><button class="toggle on" role="switch" aria-checked="true" aria-label="夜间免打扰" data-toggle-name="夜间免打扰"></button></div>
+              </div>
+
+              <div class="settings-group">
+                <h5>账号与其它</h5>
+                <button class="set-link" id="editNameBtn"><span class="set-main"><b>昵称</b><p>当前：yaya · 点这里改显示名</p></span><span class="chev">›</span></button>
+                <button class="set-link" id="privacyBtn"><span class="set-main"><b>隐私 · 谁能看见我的打卡</b><p>仅所在小队可见 · 照片带水印</p></span><span class="chev">›</span></button>
+                <button class="set-link" id="cacheBtn"><span class="set-main"><b>清除缓存</b><p>不删打卡记录、纪要和周报</p></span><span class="chev">›</span></button>
+              </div>
+              <p style="font-size:12px;color:var(--ink2);line-height:1.6;margin:12px 2px 0">设置只改你自己的提醒与展示，不影响小队规则：逾期只戳一下、质疑过半才重打，这些对全队一致。</p>
+            </section>
+
+          </div>
+
+          <div class="toast" id="toast">已发布</div>
+
+          <nav class="tabbar">
+            <button class="tab active" data-go="today"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10H3z"/></svg>今日</button>
+            <button class="tab" data-go="team"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5M16 5.5a3.5 3.5 0 010 6.5M17.5 15.3c2 .6 3.4 2 4 4.7"/></svg>小队</button>
+            <div><button class="fab" data-go="camera" aria-label="打卡">+</button><div style="text-align:center;font-size:11px;font-weight:700;color:var(--ink2);margin-top:2px">打卡</div></div>
+            <button class="tab" data-go="report"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>周报</button>
+            <button class="tab" data-go="plans"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>计划</button>
+          </nav>
+        </div>
+      </div>
+      <p class="phone-caption">试着走一遍：今日 → 点「去打卡」→ 保持 ALL，从相册多选几张（含一张昨天的会被拦）或传 Keep 截图 → 看 AI 自动识别分类 → 验真盖章。再去小队给彭源那张卡勾「质疑」发评论，质疑过半就会触发重新打卡。</p>
+    </div>
+
+    <!-- RIGHT SPEC -->
+    <aside class="spec">
+      <div class="card">
+        <h2>当前屏说明</h2>
+        <h3 id="specTitle">今日 · 先给人一个「还差一点」的理由</h3>
+        <p id="specDesc">首页不堆功能，只回答三件事：我连续了几天、今天还差什么、队友到哪了。连续记录用大数字做锚，小队进度条制造温和压力。</p>
+        <ul class="spec-list" id="specList">
+          <li>状态：已完成盖章 / 待打卡 / 冻结保护，三态一眼可分</li>
+          <li>交互：主卡的「去打卡」直达相机，并带入对应计划</li>
+          <li>文案：断签叙事是「接上」，不是清零羞辱</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>打卡状态机 · v2</h2>
+        <p><span class="kbd">ALL 上传</span> → <span class="kbd">AI 识别分类</span> → <span class="kbd">查拍摄日期</span> → <span class="kbd">盖章成功</span> → <span class="kbd">赞 / 评论</span> → <span class="kbd">质疑过半 → 重新打卡</span></p>
+        <p style="margin-top:10px">没有「存疑」中间态：验真过就盖章，公道交给队友的质疑票 — 5 人小队满 3 票才打回，既防误杀，也防一个人说了算。</p>
+        <p style="margin-top:10px"><span class="kbd">截止 +30 分钟</span> 未完成 → 自动同步小队动态并开放「戳一下」；23:30 后截止的统一 23:30 同步。</p>
+      </div>
+      <div class="card">
+        <h2>给开发的拆分提示</h2>
+        <p>每类计划是一张配置卡：部位无关，字段是「品类 / 频率 / 证明方式 / 纪要字段 / 数据来源」。前端照配置渲染，不为每个品类写死页面。单次打卡目标 60 秒走完。</p>
+      </div>
+    </aside>
+  </div>
+
+  <p class="footer-note">原型说明：本页为高保真交互原型，数据均为演示数据。AI 验真、纪要与周报在原型中为流程模拟；正式版口径以流程说明文档为准 — 饮食热量标注估算、运动数据来自计时与健康数据、App 不经手任何押金或奖金。</p>
+</div>
+
+<script>
+var SPECS = {
+  today:{t:"今日 · 先给人一个「还差一点」的理由",d:"首页不堆功能，只回答三件事：我连续了几天、今天还差什么、队友到哪了。左上角是自己的头像，右上角是通知与设置，点头像或齿轮都能进设置改头像、管通知。",l:["状态：已完成盖章 / 待打卡 / 冻结保护，三态一眼可分","交互：主卡的「去打卡」直达相机，并带入对应计划；头像/设置在右上角与左上角固定位置","逾期动态只留「戳一下」，不给点赞鼓励"]},
+  camera:{t:"打卡 · 默认 ALL，上传完再分家",d:"入口默认 ALL：现拍、相册、运动截图都收，相册逐张读拍摄日期只放行今日，照片可多张一次交。AI 按内容自动分类，识别不准用户点标签改选后重新打卡。",l:["相册校验看 EXIF 拍摄日期，非今日直接拦截并说明原因","运动类可传 Keep 等 App 当天截图，认日期与运动数据","识别结果带置信度明示，改标签是一等操作不是藏起来的纠错"]},
+  memo:{t:"纪要 · AI 先干活，用户只做确认",d:"验真与纪要拆成两段：先判真假，再把照片变成结构化记录。纪要可编辑是刻意的信任设计 — AI 认错，用户才敢长期用。",l:["三步验真逐步点亮，每步写清在查什么","数据带来源标签：计时器 / 健康数据 / 估算","发布动作叫「盖章」，强化收据与归档感"]},
+  team:{t:"小队 · 盖章之后，公道在评论区",d:"所有打卡验真过即盖章，没有存疑态。已盖章的卡能赞、能评，评论勾上「质疑」才计票；5 人小队满 3 票（过半）才打回重打。逾期未打的会自动同步进来，只留「戳一下」等人戳，没有点赞鼓励。",l:["质疑进度条公开可见，凑票过程不搞暗箱","过半触发：撤章 + 推送重打入口，连续记录先冻结保护","逾期同步卡只有一个动作：戳一下，戳人每天上限且按钮态明确"]},
+  report:{t:"周报 · 第一读者是队友，也能带走",d:"周报用叙事开头而不是数字开头：一句判断、一段回顾、一个下周建议，再加三枚按真实数据颁的本周称号。发法有两种：进小队动态，或存成图片带走分享。",l:["柱状图含冻结日标记，漏打被诚实呈现","称号小结：最积极 / 点评家 / 被盯打卡，全部有数据出处","发送到小队动态与保存图片分享并列，不逼用户二选一"]},
+  plans:{t:"计划 · 少即是多，配置卡驱动",d:"最多 3 个并行计划是写进 UI 的约束。每张计划卡把频率、证明、提醒、可见性四件事摊开，创建时就把丑话说在前面。",l:["周期只有 7 天体验约与 21 天正式约两档","提醒时间可按排班变化（如飞行日 14:00 / 07:30）","补卡保周完成率、不保连续记录，规则不藏"]},
+  settings:{t:"设置 · 从今日页右上角进入",d:"今日页左上角是自己的头像，右上角并排通知与设置。设置里改头像会立刻同步到今日头像、小队与动态；通知开关按提醒类型拆开，不搞一刀切。",l:["头像：6 枚预设色一键换，或从相册上传，今日页即时同步","通知：总开关 / 戳一下 / 截止前 / 逾期同步 / 队友动态 / 周报 / 夜间免打扰","逾期动态只有「戳一下」一个动作，没有点赞鼓励按钮"]},
+};
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+var viewport = document.getElementById('viewport');
+var toastEl = document.getElementById('toast');
+var toastTimer = null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2200);
+}
+function go(name){
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  var el = document.getElementById('view-' + name);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-go') === name); });
+  document.querySelectorAll('.flow-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-go') === name); });
+  var s = SPECS[name];
+  if(s){
+    document.getElementById('specTitle').textContent = s.t;
+    document.getElementById('specDesc').textContent = s.d;
+    document.getElementById('specList').innerHTML = s.l.map(function(x){ return '<li>' + x + '</li>'; }).join('');
+  }
+  viewport.scrollTop = 0;
+}
+document.querySelectorAll('[data-go]').forEach(function(el){
+  el.addEventListener('click', function(){ go(el.getAttribute('data-go')); });
+});
+/* plan pick + start checkin (v2: ALL default + auto recognition + multi-photo) */
+var currentPlan = 'ALL';
+var recognizedPlan = null;
+var photos = [];
+var KIND_PLAN = { study:'学习 · OPI 第4课', run:'运动 · 跑步', keep:'运动 · 跑步', food:'饮食 · 晚餐', custom:'自定义 · 练琴', live:'运动 · 跑步' };
+var KIND_LABEL = { study:'笔记照片', run:'跑后照片', keep:'Keep 截图', food:'晚餐照片', custom:'证明照片', live:'实时拍摄' };
+var KIND_CLS = { study:'th-study', run:'th-run', keep:'th-keep', food:'th-food', custom:'th-run', live:'th-run' };
+function effectivePlan(){ return currentPlan !== 'ALL' ? currentPlan : (recognizedPlan || '运动 · 跑步'); }
+function renderTray(){
+  var tray = document.getElementById('photoTray');
+  tray.querySelectorAll('.thumb').forEach(function(t){ t.remove(); });
+  photos.forEach(function(ph, idx){
+    var d = document.createElement('div');
+    d.className = 'thumb ' + KIND_CLS[ph.kind];
+    d.innerHTML = '<button aria-label="移除">×</button><span>' + ph.label + '</span><span>' + ph.src + '</span>';
+    d.querySelector('button').addEventListener('click', function(){ photos.splice(idx, 1); renderTray(); updateRecog(); });
+    tray.insertBefore(d, document.getElementById('trayCount'));
+  });
+  document.getElementById('trayCount').textContent = '已选 ' + photos.length + ' / 6 张 · 照片可多张，一次打卡一起交';
+}
+function updateRecog(){
+  var box = document.getElementById('recogBox');
+  if(!photos.length){ box.classList.remove('show'); box.innerHTML = ''; recognizedPlan = null; return; }
+  var counts = {};
+  photos.forEach(function(ph){ var pl = KIND_PLAN[ph.kind]; counts[pl] = (counts[pl] || 0) + 1; });
+  var best = null, bestN = 0;
+  Object.keys(counts).forEach(function(k){ if(counts[k] > bestN){ best = k; bestN = counts[k]; } });
+  recognizedPlan = best;
+  var conf = 88 + bestN * 3; if(conf > 97) conf = 97;
+  box.classList.add('show');
+  if(currentPlan !== 'ALL'){
+    box.innerHTML = '<b>已按你选的标签归类：' + escapeHtml(currentPlan) + '</b><br/>AI 原识别为「' + escapeHtml(best) + '」。发布时以你选的标签为准 — 识别不准就这样改，改完重新打卡即可。';
+  } else {
+    box.innerHTML = '<b>AI 自动识别：' + escapeHtml(best) + '</b> · 置信度 ' + conf + '%<br/>根据 ' + photos.length + ' 张照片的内容与日期识别。不对？点上方对应标签改选，就会按新标签重新打卡。';
+  }
+  syncMemoForPlan();
+}
+function addPhoto(kind, src){
+  if(photos.length >= 6){ toast('一次最多 6 张'); return; }
+  photos.push({ kind: kind, label: KIND_LABEL[kind], src: src });
+  renderTray(); updateRecog();
+}
+document.querySelectorAll('#planPick .pick').forEach(function(p){
+  p.addEventListener('click', function(){
+    document.querySelectorAll('#planPick .pick').forEach(function(x){ x.classList.remove('active'); });
+    p.classList.add('active');
+    currentPlan = p.getAttribute('data-plan');
+    document.getElementById('camTitle').textContent = currentPlan === 'ALL' ? 'ALL · 自动识别打卡' : currentPlan + '打卡';
+    updateRecog(); syncMemoForPlan();
+    if(currentPlan !== 'ALL') toast('已改选标签：' + currentPlan);
+  });
+});
+function syncMemoForPlan(){
+  var ep = effectivePlan();
+  var isStudy = ep.indexOf('学习') === 0;
+  var isFood = ep.indexOf('饮食') === 0;
+  document.getElementById('memoTitle').textContent = isStudy ? '学习打卡纪要' : (isFood ? '饮食打卡纪要' : '跑步打卡纪要');
+  document.getElementById('memoStat1').textContent = isStudy ? '45' : (isFood ? '1' : '32');
+  document.getElementById('memoStat2').textContent = isStudy ? '12' : (isFood ? '3' : '4.8');
+  document.getElementById('memoStat3').textContent = isStudy ? '3' : (isFood ? '520–640' : '~286');
+  document.querySelectorAll('.stat span')[0].textContent = isStudy ? '分钟 · 自报+计时' : (isFood ? '餐 · 本次' : '分钟 · 计时器');
+  document.querySelectorAll('.stat span')[1].textContent = isStudy ? '页 · OCR 识别' : (isFood ? '种菜品 · AI 识别' : '公里 · 健康数据');
+  document.querySelectorAll('.stat span')[2].textContent = isStudy ? '条摘记 · AI 摘要' : (isFood ? '千卡 · 估算区间' : '千卡 · 估算');
+  document.getElementById('memoText').value = isStudy
+    ? '学习 OPI 第 4 课「非正常情况」45 分钟，重点整理了发动机失效处置与复诵要点，OCR 识别笔记 12 页，生成 3 条摘记。'
+    : (isFood ? '晚餐识别到番茄炒蛋、糙米饭与青菜 3 种食物。热量为估算区间，仅供参考，不作精确记录。'
+    : '傍晚沿河跑步 32 分钟，配速稳定，后半程略降速。照片为跑鞋与计时界面，到场证明成立；时长与距离来自计时与手机健康数据。');
+}
+document.querySelectorAll('[data-start-checkin]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var label = b.getAttribute('data-start-checkin');
+    currentPlan = label;
+    document.getElementById('camTitle').textContent = label + '打卡';
+    document.querySelectorAll('#planPick .pick').forEach(function(x){ x.classList.toggle('active', x.getAttribute('data-plan').indexOf(label.split(' ')[0]) === 0); });
+    updateRecog(); syncMemoForPlan();
+    go('camera');
+  });
+});
+document.getElementById('timerBtn').addEventListener('click', function(){ toast('计时已开始 · 拍照只负责证明到场'); });
+/* album picker: per-photo date check */
+var albumAttemptedOld = false;
+document.getElementById('albumBtn').addEventListener('click', function(){
+  document.getElementById('albumPicker').classList.toggle('open');
+});
+document.querySelectorAll('.pick-photo').forEach(function(pp){
+  pp.addEventListener('click', function(){
+    if(pp.getAttribute('data-photo') === 'old'){
+      pp.classList.add('rejected'); pp.classList.remove('sel'); albumAttemptedOld = true;
+      var dn = document.getElementById('dateNote');
+      dn.className = 'date-note bad';
+      dn.textContent = '✗ 「昨天的笔记」拍摄日期为 11-16，不是今天 — 已拦截，不能用于今天打卡。';
+      toast('非今日照片已被拦截');
+      return;
+    }
+    pp.classList.toggle('sel');
+  });
+});
+document.getElementById('albumConfirm').addEventListener('click', function(){
+  var sel = document.querySelectorAll('.pick-photo.sel');
+  if(!sel.length){ toast('先在相册里点选照片'); return; }
+  sel.forEach(function(pp){ addPhoto(pp.getAttribute('data-photo'), '相册 · 今日 ✓'); pp.classList.remove('sel'); });
+  var dn = document.getElementById('dateNote');
+  dn.className = 'date-note ok';
+  dn.textContent = '✓ 已加入的照片拍摄日期均为今天（11-17），日期校验通过。' + (albumAttemptedOld ? ' 昨天那张已被拦下，没有计入。' : '');
+  document.getElementById('albumPicker').classList.remove('open');
+  toast('相册照片已加入 · 日期均为今日');
+});
+document.getElementById('keepBtn').addEventListener('click', function(){
+  addPhoto('keep', 'Keep · 今日 ✓');
+  toast('已加入 Keep 今日截图 · 识别到跑步数据');
+});
+/* shutter adds a live photo; verify goes to memo */
+document.getElementById('shutterBtn').addEventListener('click', function(){
+  var kind = 'live';
+  if(currentPlan.indexOf('学习') === 0) kind = 'study';
+  if(currentPlan.indexOf('饮食') === 0) kind = 'food';
+  addPhoto(kind, '实时拍摄 · 今日 ✓');
+  toast('已拍 1 张 · 可继续多拍，或点「去验真」');
+});
+document.getElementById('toVerifyBtn').addEventListener('click', function(){
+  if(!photos.length){ toast('先拍一张，或从相册选今日照片'); return; }
+  document.getElementById('memoThumbs').innerHTML = '<span>证据 ' + photos.length + ' 张</span><span>' + escapeHtml(photos.map(function(p){ return p.label; }).filter(function(v,i,a){ return a.indexOf(v) === i; }).join(' + ')) + '</span>';
+  document.getElementById('vs0sub').textContent = '识别为「' + effectivePlan() + '」' + (currentPlan === 'ALL' ? '（ALL 自动分类）' : '（按你改选的标签）');
+  go('memo');
+  setTimeout(runVerify, 350);
+});
+/* verify */
+var verifying = false;
+function runVerify(){
+  if(verifying) return;
+  verifying = true;
+  document.getElementById('verifyChip').style.display = 'none';
+  document.getElementById('memoWrap').style.display = 'none';
+  var steps = document.querySelectorAll('.vstep');
+  steps.forEach(function(s){ s.classList.remove('doing','done'); s.querySelector('.vdot').textContent = s.getAttribute('data-vs') === '0' ? '1' : (s.getAttribute('data-vs') === '1' ? '2' : '3'); });
+  var i = 0;
+  function next(){
+    if(i > 0){ steps[i-1].classList.remove('doing'); steps[i-1].classList.add('done'); steps[i-1].querySelector('.vdot').textContent = '✓'; }
+    if(i >= steps.length){
+      document.getElementById('verifyChip').style.display = '';
+      var wrap = document.getElementById('memoWrap');
+      wrap.style.display = '';
+      var seal = document.getElementById('seal');
+      seal.classList.remove('stamp-pop'); void seal.offsetWidth; seal.classList.add('stamp-pop');
+      verifying = false;
+      toast('验真通过 · 相关性 94%');
+      return;
+    }
+    steps[i].classList.add('doing');
+    i++;
+    setTimeout(next, 620);
+  }
+  next();
+}
+document.getElementById('runVerify').addEventListener('click', runVerify);
+/* publish */
+var published = false;
+document.getElementById('publishBtn').addEventListener('click', function(){
+  if(published){ toast('这张卡已经盖章发布了'); go('team'); return; }
+  published = true;
+  document.getElementById('todayCount').textContent = '2 / 3';
+  document.getElementById('streakNum').textContent = '13';
+  var ss = document.getElementById('settingsStreak'); if(ss) ss.textContent = '13';
+  document.getElementById('teamBar').style.width = '80%';
+  var runTask = document.getElementById('task-run');
+  runTask.classList.add('done');
+  runTask.querySelector('.btn').outerHTML = '<span class="chip ok">✓ 已盖章</span>';
+  var feed = document.getElementById('feedList');
+  var item = document.createElement('article');
+  item.className = 'feed-item';
+  var ep = effectivePlan();
+  item.innerHTML = '<div class="feed-head"><span class="avatar av-a">Y</span><div style="flex:1"><b>你 · ' + escapeHtml(ep.split(' ')[0]) + '</b><span class="sub">刚刚 · 已验真 94% · 证据 ' + Math.max(photos.length, 1) + ' 张</span></div><span class="chip ok">✓ 盖章</span></div>'
+    + '<div class="feed-photo fp-run"><span>' + escapeHtml(ep) + ' · 证明照片</span><span class="chip">刚刚发布</span></div>'
+    + '<p style="margin:0;font-size:13px;line-height:1.6">' + escapeHtml(document.getElementById('memoText').value) + '</p>'
+    + '<div class="feed-actions"><button class="mini-btn" data-like>♥ 赞 · 0</button><button class="mini-btn" data-comment-toggle>💬 评论 · 0</button></div>'
+    + '<div class="comment-box"><div class="comment-list"></div><textarea placeholder="写评论…"></textarea><label class="doubt-line"><input type="checkbox" class="doubt-check"/> 勾选 = 我质疑这张卡（计入质疑票）</label><button class="btn btn-dark submit-comment" style="width:100%">发表评论</button></div>';
+  feed.insertBefore(item, feed.firstChild);
+  bindDynamic(item);
+  toast('已盖章 · 连续记录 +1 天');
+  setTimeout(function(){ go('team'); }, 500);
+});
+function bindDynamic(root){
+  root.querySelectorAll('[data-like]').forEach(function(b){
+    if(b._bound) return; b._bound = true;
+    b.addEventListener('click', function(){
+      var m = b.textContent.match(/(\d+)/);
+      var n = m ? parseInt(m[1], 10) + 1 : 1;
+      b.textContent = '♥ 赞 · ' + n;
+    });
+  });
+  root.querySelectorAll('[data-nudge]').forEach(function(b){
+    if(b._bound) return; b._bound = true;
+    b.addEventListener('click', function(){
+      b.classList.add('nudged');
+      b.textContent = '✓ 已戳 · 对方会收到提醒';
+      toast('已戳 ' + (b.getAttribute('data-nudge') || '队友'));
+    });
+  });
+  root.querySelectorAll('[data-comment-toggle]').forEach(function(b){
+    if(b._bound) return; b._bound = true;
+    b.addEventListener('click', function(){
+      var item = b.closest('.feed-item');
+      var box = item ? item.querySelector('.comment-box') : null;
+      if(box) box.classList.toggle('open');
+    });
+  });
+  root.querySelectorAll('.submit-comment').forEach(function(b){
+    if(b._bound) return; b._bound = true;
+    b.addEventListener('click', function(){
+      var item = b.closest('.feed-item');
+      var box = b.closest('.comment-box');
+      var ta = box.querySelector('textarea');
+      var text = ta.value.trim() || '（没写文字）';
+      var isDoubt = box.querySelector('.doubt-check').checked;
+      var list = box.querySelector('.comment-list');
+      var p = document.createElement('p');
+      p.innerHTML = (isDoubt ? '<span class="doubt-tag">质疑 · </span>' : '') + '<b>你：</b>' + escapeHtml(text);
+      list.appendChild(p);
+      ta.value = ''; box.querySelector('.doubt-check').checked = false;
+      if(isDoubt && item && item.id === 'doubtCard'){
+        var dc = document.getElementById('doubtCount');
+        var n = parseInt(dc.textContent, 10) + 1;
+        dc.textContent = n;
+        document.getElementById('doubtBar').style.width = Math.min(n / 3 * 100, 100) + '%';
+        if(n >= 3){
+          document.getElementById('redoBanner').classList.add('show');
+          var chip = document.getElementById('doubtCardChip');
+          chip.textContent = '↺ 需重新打卡'; chip.className = 'chip warn';
+          toast('质疑过半 · 这张卡需重新打卡');
+          return;
+        }
+        toast('质疑已计入 · 还差 ' + (3 - n) + ' 票过半');
+        return;
+      }
+      toast(isDoubt ? '质疑评论已发表 · 已计入质疑票' : '评论已发表');
+    });
+  });
+}
+bindDynamic(document);
+document.getElementById('bellBtn').addEventListener('click', function(){ toast('3 条通知：队友点赞 · 逾期同步 · 周报已生成'); });
+/* v3: settings — avatar sync + notification toggles */
+document.getElementById('settingsBtn').addEventListener('click', function(){ go('settings'); });
+document.getElementById('myAvatarBtn').addEventListener('click', function(){ go('settings'); });
+function applyAvatarColor(color){
+  var mine = [document.getElementById('myAvatarBtn'), document.getElementById('settingsAvatarPreview')];
+  mine.forEach(function(el){ if(el) el.style.background = color; });
+  document.querySelectorAll('.av-a').forEach(function(el){ el.style.background = color; });
+}
+document.querySelectorAll('.avatar-opt').forEach(function(opt){
+  opt.addEventListener('click', function(){
+    document.querySelectorAll('.avatar-opt').forEach(function(x){ x.classList.remove('sel'); });
+    opt.classList.add('sel');
+    applyAvatarColor(opt.getAttribute('data-avatar-color'));
+    toast('头像已更换 · 今日页已同步');
+  });
+});
+document.getElementById('uploadAvatarBtn').addEventListener('click', function(){
+  applyAvatarColor('linear-gradient(140deg,#2A7FFF,#7A5CFF)');
+  document.querySelectorAll('.avatar-opt').forEach(function(x){ x.classList.remove('sel'); });
+  toast('已从相册选好头像 · 今日页已同步');
+});
+document.querySelectorAll('.toggle').forEach(function(tg){
+  tg.addEventListener('click', function(){
+    var on = tg.classList.toggle('on');
+    tg.setAttribute('aria-checked', on ? 'true' : 'false');
+    toast((tg.getAttribute('data-toggle-name') || '通知') + (on ? ' 已打开' : ' 已关闭'));
+  });
+});
+document.getElementById('editNameBtn').addEventListener('click', function(){ toast('原型提示：昵称编辑页（当前 yaya）'); });
+document.getElementById('privacyBtn').addEventListener('click', function(){ toast('当前：仅所在小队可见'); });
+document.getElementById('cacheBtn').addEventListener('click', function(){ toast('缓存已清除 · 打卡记录不受影响'); });
+document.getElementById('shareReport').addEventListener('click', function(){ go('team'); toast('周报已发送到小队动态 · 队友可点开看全文'); });
+document.getElementById('saveReportImg').addEventListener('click', function(){ toast('周报长图已生成并保存到相册 · 可转发分享'); });
+document.getElementById('newPlanBtn').addEventListener('click', function(){ toast('原型提示：新建走四步配置卡流程'); });
+</script>
+</body>
+</html>

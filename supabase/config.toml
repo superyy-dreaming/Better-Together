@@ -1,0 +1,47 @@
+project_id = "better-together"
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+[studio]
+enabled = true
+port = 54323
+[auth]
+enabled = true
+site_url = "bettertogether://auth/callback"
+additional_redirect_urls = ["bettertogether://auth/callback"]
+jwt_expiry = 3600
+enable_signup = true
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+otp_length = 8
+otp_expiry = 3600
+[auth.email.template.confirmation]
+subject = "Better Together 邮箱验证码"
+content_path = "./supabase/templates/email_otp.html"
+[auth.email.template.magic_link]
+subject = "Better Together 登录验证码"
+content_path = "./supabase/templates/email_otp.html"
+[auth.external.apple]
+enabled = true
+client_id = "app.bettertogether.betterTogether"
+email_optional = false
+[storage]
+enabled = true
+file_size_limit = "20MiB"
+[functions.api]
+verify_jwt = false
+[functions.media]
+verify_jwt = false
+[functions.worker]
+verify_jwt = false
+[functions.recognize]
+verify_jwt = false

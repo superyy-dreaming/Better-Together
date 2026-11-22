@@ -1,0 +1,5 @@
+#!/bin/sh
+# Dart native build hooks strip DEVELOPER_DIR, but preserve PATH. Scope this
+# wrapper to project build commands instead of changing macOS globally.
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+exec /usr/bin/xcrun "$@"
